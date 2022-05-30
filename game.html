@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./reset.css">
+    <link rel="stylesheet" href="./game.css">
+    <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="wrap">
+        <div class="title">
+
+        </div>
+        <img id="waldoLogo" src="./images/waldologo.png" alt="" width="25%">
+
+        <div id="box">
+            <!-- <img id="wallyTV" src="./images/wally tv.png" alt=""> -->
+            <div id="show">
+                <img class="images" id="beach" src="./images/waldo beach.jpg" alt="">
+                <img class="images" id="playground" src="./images/playground.jpg" alt="">
+                <img class="images" src="./images/museum.jpg" alt="" id="museum">
+                <img class="images" src="./images/gallery.jpg" alt="" id="gallery">
+                <img class="images" src="./images/bakery.jpg" alt="" id="bakery">
+            </div>
+
+        </div>
+
+
+        <div id="text">
+            <p class="score">Score: <span id="score">0</span> points</p>
+            <p class="time">Time: <span id="time">0</span> sec</p>
+        </div>
+
+        <div id="btn">
+            <input type="button" value="START" id="start">
+            <!-- <input type="button"  value="Next" id="next" onclick="btn()"> -->
+            <button value="Next" id="next" onclick="next()">Next</button>
+        </div>
+
+
+
+
+
+    </div>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'
+        integrity='sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=='
+        crossorigin='anonymous'></script>
+
+    <script>
+        let countdown = 10
+        let timer = 0
+        let score = 0
+        var i = 0
+
+        $('#next').attr('disabled', true)
+
+        // 開始遊戲
+        $('#start').click(function () {
+            $(this).attr('disabled', true)
+            $('#next').attr('disabled', false)
+
+
+
+
+            score = 0
+            $('#score').text(score)
+            countdown = 10
+            $('#time').text(countdown)
+
+
+            // 第一次威力出現在#beach
+            const top = Math.round(Math.random() * 70) + '%'
+            const left = Math.round(Math.random() * 70) + '%'
+
+            $('#show').append(`<img src="./images/wally.png" class="wally" style="top: ${top}; left: ${left}; z-index: 5; width: 7%;
+                position: absolute;">`)
+
+
+
+            // 倒數
+            timer = setInterval(function () {
+                countdown--
+                $('#time').text(countdown)
+
+                if (countdown <= 0) {
+                    clearInterval(timer)
+                    $('#start').attr('disabled', false)
+                    $('#next').attr('disabled', true)
+
+                    // $('.images:not(#beach)').css('display','none')
+
+                    // alert(`your score${score} points`)
+                    Swal.fire({
+                        title: 'Ah oops!',
+                        text: `your score is ${score} points`,
+                        imageUrl: './images/wally.png',
+                        imageWidth: 180,
+                        imageHeight: 400,
+                        imageAlt: 'Custom image',
+                    }).then((result) => {
+                        window.location.reload()
+                    })
+
+                }
+
+
+            }, 1000);
+
+
+        })
+
+
+
+
+
+        // 按了next變換圖片
+        var i = 0
+        const images = document.getElementsByClassName('images')
+        console.log(images[1]);
+
+        const next = () => {
+            i++
+            images[i].style.display = 'block'
+            // images[i-1].style.display='none'
+            $('.wally').remove()
+
+
+
+            // 換威利位置
+            const top = Math.round(Math.random() * 70) + '%'
+            const left = Math.round(Math.random() * 70) + '%'
+
+            $('#show').append(`<img src="./images/wally.png" class="wally" style="top: ${top}; left: ${left}; z-index: 5; width: 7%;
+                position: absolute;">`)
+
+        }
+
+        // 按了威力本人 得1分 威力消失
+        $('#show').on('click', '.wally', function () {
+            score++
+            $('#score').text(score)
+            // images[i].style.display = 'none'
+            $('.wally').remove()
+        })
+
+
+
+
+    </script>
+
+
+
+</body>
+
+</html>
